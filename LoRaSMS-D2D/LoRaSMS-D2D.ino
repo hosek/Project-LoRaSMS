@@ -3,8 +3,8 @@
 #include <SPI.h>
 #include <RH_RF95.h>
 #include "htmlServer.h"
-#include "crc16.h"
-//#include <CircularBuffer.h>
+#include "Crc16.h"
+#include "debug.h"
 #include <RingBufCPP.h>
 
 using namespace std;
@@ -15,12 +15,14 @@ using namespace std;
 #define RFM95_RST	26
 #define RFM95_CS	21
 #define RFM95_INT	25
+#define BUILTIN_LED 13
 #else
 #define RFM95_RST	4
 #define RFM95_CS	5
 #define RFM95_INT	3
 #define	BUILTIN_LED	13
 #endif
+
 
 /* ESP32 wiring as in my video.
 MISO    purple
@@ -38,6 +40,7 @@ Gnd     black
 
 // Singleton instance of the radio driver
 RH_RF95 rf95(RFM95_CS, RFM95_INT);
+CRC16 crc; 
 
 // An arbitrary fixed maximum length of 128 bytes. You could increase it, but be careful of RX_BUFF_SIZE
 // Increasing both will overflow RAM easily.
@@ -202,7 +205,7 @@ uint8_t addTx(uint8_t *PayLoad, uint8_t Size)
 	TXmsg.Size = Size;
 	TXmsg.Index = Counter;
 	TXmsg.Time = (uint16_t)millis();
-	TXmsg.CRC = (uint16_t)CRC(PayLoad, Size);
+	TXmsg.CRC =  (uint16_t)CRC(PayLoad, Size);
 	memcpy((uint8_t *)TXmsg.payload, (uint8_t *)PayLoad, Size);
 	TXbuffer.add(TXmsg);
 	Order[Counter] = TXbuffer.peek(TXbuffer.numElements() - 1);
@@ -464,7 +467,7 @@ void BlinkNoReply(void)
 
 uint16_t CRC(uint8_t *Str, uint8_t Size)
 {
-	CRC16 crc;
+	
 	char CRCcheck[SMS_LENGTH];
 	memcpy((char *)CRCcheck, (uint8_t *)Str, Size);
 

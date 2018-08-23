@@ -12,7 +12,7 @@ Features I'll be adding:
 - [ ] Maybe even an app!
 
 Check out [my tutorial video](https://www.youtube.com/watch?v=b_RPwtxtNdc) on how I made it.
-Also check out [my website](https://www.mickmake.com/archives/4640) for further details. 
+Also check out [my website](https://www.mickmake.com/archives/4640) for further details.
 
 
 ## Support :+1:
@@ -21,5 +21,3 @@ If you want to support me, then head on over to [my Patreon page](http://patreon
 
 ## License
 This source code is covered under the GPL! Use it, destroy it, make it better.
-
-
